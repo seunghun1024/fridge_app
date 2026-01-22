@@ -4,6 +4,8 @@ import '../../models/app_state.dart';
 import '../../models/models.dart';
 import '../fridge_detail_screen.dart';
 
+import '../add_fridge_screen.dart';
+
 class FridgeTab extends StatelessWidget {
   const FridgeTab({super.key});
 
@@ -13,9 +15,17 @@ class FridgeTab extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Fridges"),
+        title: const Text("나의 냉장고"),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddFridgeScreen()),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
         ],
       ),
       body: ListView.builder(

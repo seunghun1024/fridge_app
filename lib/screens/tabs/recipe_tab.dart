@@ -20,7 +20,7 @@ class _RecipeTabState extends State<RecipeTab> {
     final items = context.watch<AppState>().items;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("What to Cook?")),
+      appBar: AppBar(title: const Text("오늘 뭐 먹지?")),
       body: Column(
         children: [
           Container(
@@ -28,10 +28,52 @@ class _RecipeTabState extends State<RecipeTab> {
             color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
             child: Column(
               children: [
-                Text(
-                  "You have ${items.length} ingredients available.",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    const Icon(Icons.inventory_2_outlined, color: Colors.blueGrey),
+                    const SizedBox(width: 8),
+                    Text(
+                      "현재 보유 재료 (${items.length})",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 12),
+                if (items.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24),
+                    child: Text("냉장고가 비어있어요! 재료를 추가해주세요.", style: TextStyle(color: Colors.grey)),
+                  )
+                else
+                  SizedBox(
+                    height: 50,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: items.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 8),
+                      itemBuilder: (context, index) {
+                        final item = items[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey[300]!),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(_getCategoryEmoji(item.category)),
+                              const SizedBox(width: 8),
+                              Text(item.name, style: const TextStyle(fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
@@ -40,7 +82,7 @@ class _RecipeTabState extends State<RecipeTab> {
                     icon: _isLoading 
                         ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)) 
                         : const Icon(Icons.auto_awesome),
-                    label: const Text("Recommend Recipes"),
+                    label: const Text("레시피 추천받기"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       foregroundColor: Colors.white,
@@ -52,14 +94,14 @@ class _RecipeTabState extends State<RecipeTab> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: Text("Asking the chef..."))
+                ? const Center(child: Text("쉐프에게 물어보는 중..."))
                 : _recommendations == null
                     ? const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.menu_book, size: 60, color: Colors.grey),
-                            Text("Tap the button to get ideas!"),
+                            Text("버튼을 눌러 추천을 받아보세요!"),
                           ],
                         ),
                       )
@@ -137,5 +179,17 @@ class _RecipeTabState extends State<RecipeTab> {
         ],
       ),
     );
+  }
+
+  String _getCategoryEmoji(FoodCategory c) {
+    switch (c) {
+      case FoodCategory.meat: return "🥩";
+      case FoodCategory.veggie: return "🥦";
+      case FoodCategory.dairy: return "🥛";
+      case FoodCategory.fruit: return "🍎";
+      case FoodCategory.beverage: return "🥤";
+      case FoodCategory.sauce: return "🥫";
+      case FoodCategory.other: return "📦";
+    }
   }
 }
