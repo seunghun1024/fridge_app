@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/app_state.dart';
 import '../../models/models.dart';
-import '../../services/mock_api_service.dart';
+import '../../services/spoonacular_service.dart';
 
 class RecipeTab extends StatefulWidget {
   const RecipeTab({super.key});
@@ -94,7 +94,7 @@ class _RecipeTabState extends State<RecipeTab> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: Text("쉐프에게 물어보는 중..."))
+                ? const Center(child: Text("셰프에게 물어보는 중..."))
                 : _recommendations == null
                     ? const Center(
                         child: Column(
@@ -120,7 +120,7 @@ class _RecipeTabState extends State<RecipeTab> {
 
   Future<void> _getRecommendations() async {
     setState(() => _isLoading = true);
-    final api = context.read<MockApiService>();
+    final api = context.read<SpoonacularService>(); // Changed to SpoonacularService
     final items = context.read<AppState>().items;
     
     final results = await api.recommendRecipes(items);
@@ -141,8 +141,14 @@ class _RecipeTabState extends State<RecipeTab> {
         children: [
           Container(
             height: 150,
+            width: double.infinity,
             color: Colors.grey[300],
-            child: const Center(child: Icon(Icons.image, size: 50, color: Colors.grey)),
+            child: recipe.imageUrl != null 
+                ? Image.network(
+                    recipe.imageUrl!,
+                    fit: BoxFit.cover,
+                  )
+                : const Center(child: Icon(Icons.image, size: 50, color: Colors.grey)),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -155,7 +161,9 @@ class _RecipeTabState extends State<RecipeTab> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "${recipe.cookingTimeMin} min • ${recipe.difficulty}",
+                  recipe.cookingTimeMin > 0 
+                      ? "${recipe.cookingTimeMin}분 • ${recipe.difficulty}"
+                      : "Spoonacular 레시피",
                   style: TextStyle(color: Colors.grey[600], fontSize: 13),
                 ),
                 const SizedBox(height: 12),

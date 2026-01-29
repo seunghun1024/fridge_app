@@ -85,7 +85,9 @@ class Recipe {
   final int cookingTimeMin;
   final String difficulty;
   final List<String> ingredients;
+  final List<String> extraIngredients;
   final List<String> instructions;
+  final String? imageUrl;
 
   Recipe({
     String? id,
@@ -94,6 +96,8 @@ class Recipe {
     required this.cookingTimeMin,
     required this.difficulty,
     required this.ingredients,
+    this.extraIngredients = const [],
     required this.instructions,
+    this.imageUrl,
   }) : id = id ?? uuid.v4();
 }

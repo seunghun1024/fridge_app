@@ -18,7 +18,7 @@ class OnboardingScreen extends StatelessWidget {
               const Icon(Icons.kitchen, size: 100, color: Color(0xFF2E7D32)),
               const SizedBox(height: 24),
               Text(
-                "Keep Your Food Fresh",
+                "식재료를 신선하게 관리하세요",
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
@@ -27,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                "Manage your fridge inventory and get recipe recommendations instantly.",
+                "냉장고 속 재료를 스마트하게 관리하고\n레시피 추천까지 받아보세요.",
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -52,7 +52,7 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    "Get Started",
+                    "시작하기",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),

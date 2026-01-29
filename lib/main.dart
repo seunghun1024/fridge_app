@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'screens/onboarding_screen.dart';
-import 'services/mock_api_service.dart';
+import 'services/spoonacular_service.dart';
 import 'models/app_state.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class FridgeApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppState()),
-        Provider(create: (_) => MockApiService()),
+        Provider(create: (_) => SpoonacularService()),
       ],
       child: MaterialApp(
         title: 'Smart Fridge',

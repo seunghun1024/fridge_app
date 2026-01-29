@@ -17,7 +17,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _qtyController = TextEditingController();
-  final _unitController = TextEditingController(text: 'pcs');
+  final _unitController = TextEditingController(text: '개');
   
   FoodCategory _selectedCategory = FoodCategory.other;
   DateTime _expiryDate = DateTime.now().add(const Duration(days: 7));
@@ -25,7 +25,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Item")),
+      appBar: AppBar(title: const Text("식재료 추가")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Form(
@@ -36,24 +36,24 @@ class _AddItemScreenState extends State<AddItemScreen> {
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
-                  labelText: "Item Name",
-                  hintText: "e.g., Cheddar Cheese",
+                  labelText: "이름",
+                  hintText: "예: 체다 치즈",
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.abc),
                 ),
-                validator: (val) => val == null || val.isEmpty ? "Required" : null,
+                validator: (val) => val == null || val.isEmpty ? "필수 입력" : null,
               ),
               const SizedBox(height: 16),
               
               DropdownButtonFormField<FoodCategory>(
                 value: _selectedCategory,
                 decoration: const InputDecoration(
-                  labelText: "Category",
+                  labelText: "카테고리",
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
                 ),
                 items: FoodCategory.values.map((c) {
-                  return DropdownMenuItem(value: c, child: Text(c.name.toUpperCase()));
+                  return DropdownMenuItem(value: c, child: Text(_getCategoryName(c)));
                 }).toList(),
                 onChanged: (val) => setState(() => _selectedCategory = val!),
               ),
@@ -67,10 +67,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
                       controller: _qtyController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        labelText: "Quantity",
+                        labelText: "수량",
                         border: OutlineInputBorder(),
                       ),
-                      validator: (val) => val!.isEmpty ? "Required" : null,
+                      validator: (val) => val!.isEmpty ? "필수 입력" : null,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -79,7 +79,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                     child: TextFormField(
                       controller: _unitController,
                       decoration: const InputDecoration(
-                        labelText: "Unit",
+                        labelText: "단위",
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -100,7 +100,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 },
                 child: InputDecorator(
                   decoration: const InputDecoration(
-                     labelText: "Expiry Date",
+                     labelText: "유통기한",
                      border: OutlineInputBorder(),
                      prefixIcon: Icon(Icons.calendar_today),
                   ),
@@ -118,7 +118,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text("Save Item"),
+                  child: const Text("저장하기"),
                 ),
               ),
             ],
@@ -126,6 +126,18 @@ class _AddItemScreenState extends State<AddItemScreen> {
         ),
       ),
     );
+  }
+
+  String _getCategoryName(FoodCategory c) {
+    switch (c) {
+      case FoodCategory.meat: return "육류";
+      case FoodCategory.veggie: return "채소";
+      case FoodCategory.dairy: return "유제품";
+      case FoodCategory.fruit: return "과일";
+      case FoodCategory.beverage: return "음료";
+      case FoodCategory.sauce: return "소스/양념";
+      case FoodCategory.other: return "기타";
+    }
   }
 
   void _saveItem() {

@@ -8,20 +8,20 @@ class MockApiService {
     // Simple mock logic
     return [
       Recipe(
-        title: "Creamy Carrot Soup",
-        description: "A warm and delicious soup made from fresh carrots.",
+        title: "크림 당근 스프",
+        description: "신선한 당근으로 만든 따뜻하고 맛있는 스프입니다.",
         cookingTimeMin: 30,
-        difficulty: "Easy",
-        ingredients: ["Carrots", "Milk", "Onion", "Butter"],
-        instructions: ["Chop carrots", "Boil with milk", "Blend until smooth"],
+        difficulty: "쉬움",
+        ingredients: ["당근", "우유", "양파", "버터"],
+        instructions: ["당근 썰기", "우유와 함께 끓이기", "부드러워질 때까지 갈기"],
       ),
        Recipe(
-        title: "Vegetable Stir Fry",
-        description: "Quick and healthy mix of vegetables.",
+        title: "신선한 야채 볶음",
+        description: "빠르고 건강한 야채 믹스 볶음 요리입니다.",
         cookingTimeMin: 15,
-        difficulty: "Medium",
-        ingredients: ["Carrots", "Cabbage", "Soy Sauce"],
-        instructions: ["Slice veggies", "Stir fry in pan", "Add sauce"],
+        difficulty: "보통",
+        ingredients: ["당근", "양배추", "간장"],
+        instructions: ["채소 썰기", "팬에 볶기", "소스 넣기"],
       ),
     ];
   }

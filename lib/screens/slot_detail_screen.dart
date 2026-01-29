@@ -37,7 +37,7 @@ class SlotDetailScreen extends StatelessWidget {
                 children: [
                    Icon(Icons.kitchen_outlined, size: 64, color: Colors.grey[300]),
                    const SizedBox(height: 16),
-                   Text("Empty Slot", style: TextStyle(color: Colors.grey[500])),
+                   Text("보관된 식재료가 없습니다", style: TextStyle(color: Colors.grey[500])),
                 ],
               ),
             )
@@ -56,11 +56,11 @@ class SlotDetailScreen extends StatelessWidget {
   Widget _buildItemCard(BuildContext context, FoodItem item) {
     final daysLeft = item.daysUntilExpiry;
     Color statusColor = Colors.green;
-    String statusText = "Fresh";
+    String statusText = "신선";
 
     if (daysLeft < 0) {
       statusColor = Colors.grey;
-      statusText = "Expired";
+      statusText = "만료";
     } else if (daysLeft <= 3) {
       statusColor = Colors.red;
       statusText = "D-$daysLeft";
@@ -79,7 +79,7 @@ class SlotDetailScreen extends StatelessWidget {
           ),
         ),
         title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text("${item.quantity} ${item.unit} • Expires ${DateFormat('MM/dd').format(item.expiryDate)}"),
+        subtitle: Text("${item.quantity}${item.unit} • ${DateFormat('MM/dd').format(item.expiryDate)} 까지"),
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
