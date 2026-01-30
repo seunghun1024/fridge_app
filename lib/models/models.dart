@@ -17,6 +17,26 @@ class Fridge {
     required this.modelName,
     required this.compartments,
   }) : id = id ?? uuid.v4();
+
+  factory Fridge.fromJson(Map<String, dynamic> json) {
+    return Fridge(
+      id: json['id'],
+      name: json['name'],
+      modelName: json['modelName'] ?? '',
+      compartments: (json['compartments'] as List)
+          .map((i) => Compartment.fromJson(i))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'modelName': modelName,
+      'compartments': compartments.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 class Compartment {
@@ -31,6 +51,24 @@ class Compartment {
     required this.type,
     required this.slots,
   }) : id = id ?? uuid.v4();
+
+  factory Compartment.fromJson(Map<String, dynamic> json) {
+    return Compartment(
+      id: json['id'],
+      name: json['name'],
+      type: StorageType.values.firstWhere((e) => e.name.toUpperCase() == json['type'], orElse: () => StorageType.fridge),
+      slots: (json['slots'] as List).map((i) => Slot.fromJson(i)).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'type': type.name.toUpperCase(),
+      'slots': slots.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 class Slot {
@@ -45,6 +83,24 @@ class Slot {
     this.gridX = 1,
     this.gridY = 1,
   }) : id = id ?? uuid.v4();
+
+  factory Slot.fromJson(Map<String, dynamic> json) {
+    return Slot(
+      id: json['id'],
+      name: json['name'],
+      gridX: json['gridX'] ?? 1,
+      gridY: json['gridY'] ?? 1,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'gridX': gridX,
+      'gridY': gridY,
+    };
+  }
 }
 
 class FoodItem {
@@ -69,6 +125,34 @@ class FoodItem {
     required this.purchaseDate,
     this.memo,
   }) : id = id ?? uuid.v4();
+
+  factory FoodItem.fromJson(Map<String, dynamic> json) {
+    return FoodItem(
+      id: json['id'],
+      slotId: json['slotId'] ?? '', // Handle potential missing slotId in flat list
+      name: json['name'],
+      category: FoodCategory.values.firstWhere((e) => e.name.toUpperCase() == json['category'], orElse: () => FoodCategory.other),
+      quantity: (json['quantity'] as num).toDouble(),
+      unit: json['unit'],
+      expiryDate: DateTime.parse(json['expiryDate']),
+      purchaseDate: DateTime.parse(json['purchaseDate']),
+      memo: json['memo'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slotId': slotId,
+      'name': name,
+      'category': category.name.toUpperCase(),
+      'quantity': quantity,
+      'unit': unit,
+      'expiryDate': expiryDate.toIso8601String(),
+      'purchaseDate': purchaseDate.toIso8601String(),
+      'memo': memo,
+    };
+  }
 
   int get daysUntilExpiry {
     final now = DateTime.now();
@@ -100,4 +184,18 @@ class Recipe {
     required this.instructions,
     this.imageUrl,
   }) : id = id ?? uuid.v4();
+  
+  factory Recipe.fromJson(Map<String, dynamic> json) {
+     return Recipe(
+      id: json['id'].toString(),
+      title: json['title'],
+      description: json['description'] ?? '',
+      cookingTimeMin: json['cookingTimeMin'] ?? 0,
+      difficulty: json['difficulty'] ?? 'Unknown',
+      ingredients: List<String>.from(json['ingredients'] ?? []),
+      extraIngredients: List<String>.from(json['extraIngredients'] ?? []),
+      instructions: List<String>.from(json['instructions'] ?? []),
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
