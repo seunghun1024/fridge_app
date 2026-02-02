@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 const uuid = Uuid();
 
 enum StorageType { fridge, freezer, pantry, manual }
+enum CompartmentLocation { body, doorLeft, doorRight, bodyLeft, bodyRight } // Expanded for side-by-side
 enum FoodCategory { meat, veggie, dairy, fruit, beverage, sauce, other }
 
 class Fridge {
@@ -43,12 +44,14 @@ class Compartment {
   final String id;
   final String name;
   final StorageType type;
+  final CompartmentLocation location; // New field
   final List<Slot> slots;
 
   Compartment({
     String? id,
     required this.name,
     required this.type,
+    this.location = CompartmentLocation.body, // Default to body
     required this.slots,
   }) : id = id ?? uuid.v4();
 
@@ -57,6 +60,10 @@ class Compartment {
       id: json['id'],
       name: json['name'],
       type: StorageType.values.firstWhere((e) => e.name.toUpperCase() == json['type'], orElse: () => StorageType.fridge),
+      location: CompartmentLocation.values.firstWhere(
+        (e) => e.name == (json['location'] ?? 'body'), 
+        orElse: () => CompartmentLocation.body
+      ),
       slots: (json['slots'] as List).map((i) => Slot.fromJson(i)).toList(),
     );
   }
@@ -66,6 +73,7 @@ class Compartment {
       'id': id,
       'name': name,
       'type': type.name.toUpperCase(),
+      'location': location.name,
       'slots': slots.map((e) => e.toJson()).toList(),
     };
   }
